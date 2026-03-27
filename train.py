@@ -1,6 +1,6 @@
 import numpy as np
 from data import load_mnist, train_val_split#数据加载
-from evaluate import evaluate_model#评估
+from evaluate import evaluate_model, confusion_matrix, plot_confusion_matrix, plot_training_curves#评估
 from gradient import softmax_regression_gradients#梯度  
 from loss import cross_entropy_loss#损失    
 from model import SoftmaxRegression#模型
@@ -48,6 +48,11 @@ def train_model(
        c) 在验证集上评估准确率
        d) 打印 epoch 指标
     """
+    history = {
+        "train_loss": [],
+        "train_acc": [],
+        "val_acc": [],
+    }
     for epoch in range(1, epochs + 1):
         if epoch%10==0:
             print(f"Epoch {epoch} of {epochs} is running")
@@ -72,7 +77,11 @@ def train_model(
         train_loss = running_loss / max(1, total)
         train_acc = correct / max(1, total)
         val_acc = evaluate_model(model, x_val, y_val)
+        history["train_loss"].append(float(train_loss))
+        history["train_acc"].append(float(train_acc))
+        history["val_acc"].append(float(val_acc))
         print(f"epoch={epoch} train_loss={train_loss:.4f} train_acc={train_acc:.4f} val_acc={val_acc:.4f}")
+    return history
 
 
 if __name__ == "__main__":
@@ -81,5 +90,15 @@ if __name__ == "__main__":
     x_train, y_train, x_val, y_val = train_val_split(x_train, y_train, val_ratio=0.2, seed=42)
     print("数据加载完成")
     model = SoftmaxRegression(in_features=28 * 28, num_classes=10, seed=42)
-    train_model(model, x_train, y_train, x_val, y_val, lr=0.1, epochs=5, batch_size=100)
-    print("final_test_acc=", evaluate_model(model, x_test, y_test))
+    history = train_model(model, x_train, y_train, x_val, y_val, lr=0.1, epochs=5, batch_size=100)
+    test_acc = evaluate_model(model, x_test, y_test)
+    print("final_test_acc=", test_acc)
+
+    # 记录训练曲线：loss 与 accuracy
+    plot_training_curves(history, save_path="training_curves.png")
+
+    # 绘制混淆矩阵
+    y_pred = model.predict(x_test)
+    cm = confusion_matrix(y_test, y_pred, num_classes=10)
+    plot_confusion_matrix(cm, save_path="confusion_matrix.png")
+    print("图像已保存: training_curves.png, confusion_matrix.png")
