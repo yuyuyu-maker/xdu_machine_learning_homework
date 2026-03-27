@@ -7,8 +7,7 @@ from forward import linear, softmax
 
 class SoftmaxRegression:
     """
-    手写 softmax 回归（线性分类器）。
-    只用 numpy 做数值计算，不用 torch.nn / autograd。
+    手写 softmax 回归
     """
 
     def __init__(self, in_features: int = 28 * 28, num_classes: int = 10, *, seed: Optional[int] = 42):

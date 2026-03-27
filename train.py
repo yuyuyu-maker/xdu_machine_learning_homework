@@ -5,7 +5,20 @@ from gradient import softmax_regression_gradients#梯度
 from loss import cross_entropy_loss#损失    
 from model import SoftmaxRegression#模型
 #说明一下，其实这个模块化做的不是很好，只不过我现在想到的是这样的，所以先这样写了
-
+#训练使用的所有函数均为手写，具体见上述导入的库
+ """
+    伪代码（训练主循环）：
+    1. for epoch in 1..epochs:
+       a) 清空本轮统计量（loss/准确率计数）
+       b) 遍历 mini-batch：
+          - 前向：logits = model.forward(xb)
+          - 损失：loss = cross_entropy_loss(logits, yb)
+          - 反向：dW, db = softmax_regression_gradients(...)
+          - 更新：W -= lr*dW, b -= lr*db
+          - 累计训练集 loss 与准确率
+       c) 在验证集上评估准确率
+       d) 打印 epoch 指标
+    """
 
 def iter_minibatches(x: np.ndarray, y: np.ndarray, batch_size: int, *, shuffle: bool = True, seed: int = 42):
     """
@@ -35,19 +48,6 @@ def train_model(
     epochs: int = 5,
     batch_size: int = 100,
 ):
-    """
-    伪代码（训练主循环）：
-    1. for epoch in 1..epochs:
-       a) 清空本轮统计量（loss/准确率计数）
-       b) 遍历 mini-batch：
-          - 前向：logits = model.forward(xb)
-          - 损失：loss = cross_entropy_loss(logits, yb)
-          - 反向：dW, db = softmax_regression_gradients(...)
-          - 更新：W -= lr*dW, b -= lr*db
-          - 累计训练集 loss 与准确率
-       c) 在验证集上评估准确率
-       d) 打印 epoch 指标
-    """
     history = {
         "train_loss": [],
         "train_acc": [],

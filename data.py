@@ -83,10 +83,6 @@ def _download_atomic(url: str, path: str, *, retries: int = 2, chunk_size: int =
 
 
 def _gzip_seems_ok(path: str, *, chunk_size: int = 1 << 20) -> bool:
-    """
-    完整性校验：尝试把 gzip 流读到结尾。
-    这样可以检测“文件开头正常，但尾部被截断”的情况（你现在遇到的 EOFError）。
-    """
     try:
         with gzip.open(path, "rb") as f:
             while True:
@@ -116,12 +112,6 @@ def _read_idx_images(gz_path: str) -> np.ndarray:
 
 
 def _read_idx_labels(gz_path: str) -> np.ndarray:
-    """
-    读取 IDX1 格式标签：
-    - 前 8 字节：magic, 样本数（大端 uint32）
-    - 后续字节：标签（uint8）
-    返回形状 [N] 的 uint8 数组。
-    """
     with gzip.open(gz_path, "rb") as f:
         magic, n = struct.unpack(">II", f.read(8))
         if magic != 2049:

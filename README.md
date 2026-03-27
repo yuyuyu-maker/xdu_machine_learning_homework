@@ -1,7 +1,7 @@
 ## machine_learning_homework
 
 手写 softmax 回归（仅用 **Python + NumPy**，不使用 torch/任何深度学习库）。
-
+需要python=3.9
 ### 运行
 
 ```bash
