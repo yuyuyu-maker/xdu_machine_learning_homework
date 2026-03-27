@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from typing import Dict, List
 
 
 def evaluate_model(model, x: np.ndarray, y: np.ndarray) -> float:
@@ -37,7 +38,7 @@ def plot_confusion_matrix(cm: np.ndarray, save_path: str = "confusion_matrix.png
     plt.close()
 
 
-def plot_training_curves(history: dict[str, list[float]], save_path: str = "training_curves.png"):
+def plot_training_curves(history: Dict[str, List[float]], save_path: str = "training_curves.png"):
     """
     history 期望字段：
     - train_loss

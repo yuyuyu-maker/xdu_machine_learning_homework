@@ -90,7 +90,7 @@ if __name__ == "__main__":
     x_train, y_train, x_val, y_val = train_val_split(x_train, y_train, val_ratio=0.2, seed=42)
     print("数据加载完成")
     model = SoftmaxRegression(in_features=28 * 28, num_classes=10, seed=42)
-    history = train_model(model, x_train, y_train, x_val, y_val, lr=0.1, epochs=5, batch_size=100)
+    history = train_model(model, x_train, y_train, x_val, y_val, lr=0.1, epochs=100, batch_size=100)
     test_acc = evaluate_model(model, x_test, y_test)
     print("final_test_acc=", test_acc)
 

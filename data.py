@@ -5,6 +5,7 @@ import urllib.error
 import urllib.request
 
 import numpy as np
+from typing import Optional, Tuple
 # 纯 NumPy 加载 MNIST：
 # 1) 从官方地址下载 4 个 .gz 文件（训练图像/标签、测试图像/标签）
 # 2) 按 IDX 二进制格式解析 header 和内容
@@ -33,7 +34,7 @@ def _download(filename: str, path: str):
         except OSError:
             pass
 
-    last_err: Exception | None = None
+    last_err: Optional[Exception] = None
     for base in _BASE_URLS:
         url = base + filename
         try:
@@ -60,7 +61,7 @@ def _download_atomic(url: str, path: str, *, retries: int = 2, chunk_size: int =
         except OSError:
             pass
 
-    last_err: Exception | None = None
+    last_err: Optional[Exception] = None
     for _ in range(max(1, retries)):
         try:
             with urllib.request.urlopen(url) as resp, open(tmp, "wb") as out:
@@ -129,7 +130,7 @@ def _read_idx_labels(gz_path: str) -> np.ndarray:
     return np.frombuffer(data, dtype=np.uint8)
 
 
-def load_mnist(root: str = "./data", normalize: bool = True) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def load_mnist(root: str = "./data", normalize: bool = True) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     加载并预处理 MNIST。
 

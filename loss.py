@@ -1,9 +1,11 @@
 import numpy as np
 
+from typing import Union
+
 from forward import logsumexp
 
 
-def cross_entropy_loss(logits: np.ndarray, y: np.ndarray, reduction: str = "mean") -> float | np.ndarray:
+def cross_entropy_loss(logits: np.ndarray, y: np.ndarray, reduction: str = "mean") -> Union[float, np.ndarray]:
     """
     手写 softmax + 交叉熵（不使用 torch.nn.functional / autograd）。
 

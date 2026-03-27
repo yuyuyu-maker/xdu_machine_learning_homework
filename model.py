@@ -1,5 +1,7 @@
 import numpy as np
 
+from typing import Dict, Optional
+
 from forward import linear, softmax
 
 
@@ -9,7 +11,7 @@ class SoftmaxRegression:
     只用 numpy 做数值计算，不用 torch.nn / autograd。
     """
 
-    def __init__(self, in_features: int = 28 * 28, num_classes: int = 10, *, seed: int | None = 42):
+    def __init__(self, in_features: int = 28 * 28, num_classes: int = 10, *, seed: Optional[int] = 42):
         self.in_features = int(in_features)
         self.num_classes = int(num_classes)
 
@@ -37,5 +39,5 @@ class SoftmaxRegression:
     def predict(self, x: np.ndarray) -> np.ndarray:
         return np.argmax(self.predict_proba(x), axis=1)
 
-    def parameters(self) -> dict[str, np.ndarray]:
+    def parameters(self) -> Dict[str, np.ndarray]:
         return {"W": self.W, "b": self.b}

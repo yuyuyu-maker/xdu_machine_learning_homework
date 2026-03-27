@@ -1,5 +1,7 @@
 import numpy as np
 
+from typing import Tuple
+
 from forward import one_hot, softmax
 
 
@@ -8,7 +10,7 @@ def softmax_regression_gradients(
     logits: np.ndarray,
     y: np.ndarray,
     num_classes: int,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     计算 softmax 回归的解析梯度。
 
